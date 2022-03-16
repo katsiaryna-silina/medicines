@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+            xmlns:mdc="http://www.example.com/medicines"
+            targetNamespace="http://www.example.com/medicines"
+            elementFormDefault="qualified">
+    <xsd:element name="medicines">
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element name="medicine" maxOccurs="unbounded">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element name="name" type="xsd:string"/>
+                            <xsd:element name="company" type="xsd:string"/>
+                            <xsd:element name="group" type="xsd:string"/>
+                            <xsd:element name="versions">
+                                <xsd:complexType>
+                                    <xsd:sequence>
+                                        <xsd:element name="version" maxOccurs="unbounded">
+                                            <xsd:complexType>
+                                                <xsd:sequence>
+                                                    <xsd:element name="medicineType">
+                                                        <xsd:simpleType>
+                                                            <xsd:restriction base="xsd:string">
+                                                                <xsd:enumeration value="effervescent tablets"/>
+                                                                <xsd:enumeration value="capsules"/>
+                                                                <xsd:enumeration value="tablets"/>
+                                                            </xsd:restriction>
+                                                        </xsd:simpleType>
+                                                    </xsd:element>
+                                                    <xsd:element name="package">
+                                                        <xsd:complexType>
+                                                            <xsd:sequence>
+                                                                <xsd:element name="packageType">
+                                                                    <xsd:simpleType>
+                                                                        <xsd:restriction base="xsd:string">
+                                                                            <xsd:enumeration value="tube"/>
+                                                                            <xsd:enumeration value="bottle"/>
+                                                                            <xsd:enumeration value="jar"/>
+                                                                            <xsd:enumeration value="pack"/>
+                                                                        </xsd:restriction>
+                                                                    </xsd:simpleType>
+                                                                </xsd:element>
+                                                                <xsd:element name="number">
+                                                                    <xsd:simpleType>
+                                                                        <xsd:restriction base="xsd:positiveInteger">
+                                                                            <xsd:maxInclusive value="1000"/>
+                                                                        </xsd:restriction>
+                                                                    </xsd:simpleType>
+                                                                </xsd:element>
+                                                                <xsd:element name="price">
+                                                                    <xsd:simpleType>
+                                                                        <xsd:restriction base="xsd:decimal">
+                                                                            <xsd:fractionDigits value="2"/>
+                                                                            <xsd:minInclusive value="0.01"/>
+                                                                        </xsd:restriction>
+                                                                    </xsd:simpleType>
+                                                                </xsd:element>
+                                                            </xsd:sequence>
+                                                            <xsd:attribute name="isSealed" type="xsd:boolean"
+                                                                           default="false"
+                                                                           use="optional"/>
+                                                        </xsd:complexType>
+                                                    </xsd:element>
+                                                    <xsd:element name="dosage">
+                                                        <xsd:simpleType>
+                                                            <xsd:restriction base="xsd:string">
+                                                                <xsd:minLength value="3"/>
+                                                                <xsd:maxLength value="15"/>
+                                                                <xsd:pattern value="[0-9]* [a-zA-Z]*"/>
+                                                            </xsd:restriction>
+                                                        </xsd:simpleType>
+                                                    </xsd:element>
+                                                    <xsd:element name="certificate">
+                                                        <xsd:complexType>
+                                                            <xsd:sequence>
+                                                                <xsd:element name="name" type="mdc:limitedText"/>
+                                                                <xsd:element name="whoIssued" type="mdc:limitedText"/>
+                                                                <xsd:element name="registrationNumber"
+                                                                             type="mdc:limitedText"/>
+                                                                <xsd:element name="registrationDateFrom"
+                                                                             type="xsd:date"/>
+                                                                <xsd:element name="registrationDateTo"
+                                                                             type="xsd:date"/>
+                                                            </xsd:sequence>
+                                                        </xsd:complexType>
+                                                    </xsd:element>
+                                                </xsd:sequence>
+                                            </xsd:complexType>
+                                        </xsd:element>
+                                    </xsd:sequence>
+                                </xsd:complexType>
+                            </xsd:element>
+                        </xsd:sequence>
+                        <xsd:attribute name="id" use="required" type="xsd:ID"/>
+                    </xsd:complexType>
+                </xsd:element>
+            </xsd:sequence>
+        </xsd:complexType>
+    </xsd:element>
+    <xsd:simpleType name="limitedText">
+        <xsd:restriction base="xsd:string">
+            <xsd:minLength value="3"/>
+            <xsd:maxLength value="50"/>
+        </xsd:restriction>
+    </xsd:simpleType>
+</xsd:schema>

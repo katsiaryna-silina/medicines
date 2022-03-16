@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<users:users xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xmlns:users="http://www.example.com/users"
+             xsi:schemaLocation="http://www.example.com/users users.xsd">
+    <users:client>
+        <users:username>client</users:username>
+        <users:password>11111111</users:password>
+        <users:email>client@mail.ru</users:email>
+        <users:lastLogin>2022-03-13T13:05:22</users:lastLogin>
+        <users:telephoneNumber>+375291112233</users:telephoneNumber>
+    </users:client>
+
+    <users:employee>
+        <users:username>pharmacist</users:username>
+        <users:password>111111111</users:password>
+        <users:email>pharmacist@mail.ru</users:email>
+        <users:lastLogin>2022-03-19T21:20:10</users:lastLogin>
+        <users:position>pharmacist</users:position>
+    </users:employee>
+</users:users>

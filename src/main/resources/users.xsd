@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+            xmlns:users="http://www.example.com/users"
+            targetNamespace="http://www.example.com/users"
+            elementFormDefault="qualified">
+    <xsd:element name="users">
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element name="client" type="users:client" maxOccurs="unbounded"/>
+                <xsd:element name="employee" type="users:employee" maxOccurs="unbounded"/>
+            </xsd:sequence>
+        </xsd:complexType>
+    </xsd:element>
+    <xsd:complexType name="user">
+        <xsd:sequence>
+            <xsd:element name="username">
+                <xsd:simpleType>
+                    <xsd:restriction base="xsd:string">
+                        <xsd:minLength value="4"/>
+                        <xsd:maxLength value="15"/>
+                    </xsd:restriction>
+                </xsd:simpleType>
+            </xsd:element>
+            <xsd:element name="password">
+                <xsd:simpleType>
+                    <xsd:restriction base="xsd:string">
+                        <xsd:minLength value="8"/>
+                        <xsd:maxLength value="25"/>
+                    </xsd:restriction>
+                </xsd:simpleType>
+            </xsd:element>
+            <xsd:element name="email">
+                <xsd:simpleType>
+                    <xsd:restriction base="xsd:string">
+                        <xsd:minLength value="6"/>
+                        <xsd:maxLength value="30"/>
+                        <xsd:pattern
+                                value="[\d\D]*@[\d\D]*\.[\d\D]*"/>
+                    </xsd:restriction>
+                </xsd:simpleType>
+            </xsd:element>
+            <xsd:element name="lastLogin" type="xsd:dateTime"/>
+        </xsd:sequence>
+    </xsd:complexType>
+    <xsd:complexType name="client">
+        <xsd:complexContent>
+            <xsd:extension base="users:user">
+                <xsd:sequence>
+                    <xsd:element name="telephoneNumber">
+                        <xsd:simpleType>
+                            <xsd:restriction base="xsd:string">
+                                <xsd:minLength value="13"/>
+                                <xsd:maxLength value="16"/>
+                                <xsd:pattern value="\+[0-9]*"/>
+                            </xsd:restriction>
+                        </xsd:simpleType>
+                    </xsd:element>
+                </xsd:sequence>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+    <xsd:complexType name="employee">
+        <xsd:complexContent>
+            <xsd:extension base="users:user">
+                <xsd:sequence>
+                    <xsd:element name="position" type="xsd:string"/>
+                </xsd:sequence>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+</xsd:schema>
