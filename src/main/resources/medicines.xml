@@ -9,14 +9,16 @@
         <mdc:versions>
             <mdc:version>
                 <mdc:medicineType>effervescent tablets</mdc:medicineType>
-                <mdc:package>
-                    <mdc:packageType>pack</mdc:packageType>
-                    <mdc:number>16</mdc:number>
-                    <mdc:price>19.60</mdc:price>
-                </mdc:package>
+                <mdc:packages>
+                    <mdc:package>
+                        <mdc:packageType>pack</mdc:packageType>
+                        <mdc:number>16</mdc:number>
+                        <mdc:price>19.60</mdc:price>
+                    </mdc:package>
+                </mdc:packages>
                 <mdc:dosage>500 mg</mdc:dosage>
                 <mdc:certificate>
-                    <mdc:name>Registration certificate</mdc:name>
+                    <mdc:certificateName>Registration certificate</mdc:certificateName>
                     <mdc:whoIssued>Ministry of Health of the Republic of Belarus</mdc:whoIssued>
                     <mdc:registrationNumber>6664/04/07/09/12/14/17/19</mdc:registrationNumber>
                     <mdc:registrationDateFrom>2019-08-02</mdc:registrationDateFrom>
@@ -25,14 +27,16 @@
             </mdc:version>
             <mdc:version>
                 <mdc:medicineType>effervescent tablets</mdc:medicineType>
-                <mdc:package isSealed="true">
-                    <mdc:packageType>tube</mdc:packageType>
-                    <mdc:number>10</mdc:number>
-                    <mdc:price>8.02</mdc:price>
-                </mdc:package>
+                <mdc:packages>
+                    <mdc:package isSealed="true">
+                        <mdc:packageType>tube</mdc:packageType>
+                        <mdc:number>10</mdc:number>
+                        <mdc:price>8.02</mdc:price>
+                    </mdc:package>
+                </mdc:packages>
                 <mdc:dosage>500 mg</mdc:dosage>
                 <mdc:certificate>
-                    <mdc:name>Registration certificate</mdc:name>
+                    <mdc:certificateName>Registration certificate</mdc:certificateName>
                     <mdc:whoIssued>Ministry of Health of the Republic of Belarus</mdc:whoIssued>
                     <mdc:registrationNumber>1610/96/01/06/10/12/16/19</mdc:registrationNumber>
                     <mdc:registrationDateFrom>2016-06-06</mdc:registrationDateFrom>
@@ -41,21 +45,23 @@
             </mdc:version>
         </mdc:versions>
     </mdc:medicine>
-    <mdc:medicine id="s234ds67-e89b-12d3-a456-426614174000">
+    <mdc:medicine id="a0859413-d191-4c58-92dd-664e3f124737">
         <mdc:name>Aspirin-C</mdc:name>
         <mdc:company>BAYER BITTERFELD, GmbH</mdc:company>
         <mdc:group>NSAID</mdc:group>
         <mdc:versions>
             <mdc:version>
                 <mdc:medicineType>effervescent tablets</mdc:medicineType>
-                <mdc:package>
-                    <mdc:packageType>pack</mdc:packageType>
-                    <mdc:number>10</mdc:number>
-                    <mdc:price>9.00</mdc:price>
-                </mdc:package>
+                <mdc:packages>
+                    <mdc:package>
+                        <mdc:packageType>pack</mdc:packageType>
+                        <mdc:number>10</mdc:number>
+                        <mdc:price>9.00</mdc:price>
+                    </mdc:package>
+                </mdc:packages>
                 <mdc:dosage>400 mg</mdc:dosage>
                 <mdc:certificate>
-                    <mdc:name>Registration certificate</mdc:name>
+                    <mdc:certificateName>Registration certificate</mdc:certificateName>
                     <mdc:whoIssued>Ministry of Health of the Republic of Belarus</mdc:whoIssued>
                     <mdc:registrationNumber>2459/96/02/07/12/17</mdc:registrationNumber>
                     <mdc:registrationDateFrom>2017-10-30</mdc:registrationDateFrom>
@@ -64,21 +70,23 @@
             </mdc:version>
         </mdc:versions>
     </mdc:medicine>
-    <mdc:medicine id="aq3e4567-e89b-12d3-a456-426614174820">
+    <mdc:medicine id="aa28996f-2f7b-40d0-a99a-14c66199ac61">
         <mdc:name>Alka-Seltze</mdc:name>
         <mdc:company>BAYER BITTERFELD, GmbH</mdc:company>
         <mdc:group>NSAID</mdc:group>
         <mdc:versions>
             <mdc:version>
                 <mdc:medicineType>effervescent tablets</mdc:medicineType>
-                <mdc:package>
-                    <mdc:packageType>pack</mdc:packageType>
-                    <mdc:number>10</mdc:number>
-                    <mdc:price>11.22</mdc:price>
-                </mdc:package>
+                <mdc:packages>
+                    <mdc:package>
+                        <mdc:packageType>pack</mdc:packageType>
+                        <mdc:number>10</mdc:number>
+                        <mdc:price>11.22</mdc:price>
+                    </mdc:package>
+                </mdc:packages>
                 <mdc:dosage>324 mg</mdc:dosage>
                 <mdc:certificate>
-                    <mdc:name>Registration certificate</mdc:name>
+                    <mdc:certificateName>Registration certificate</mdc:certificateName>
                     <mdc:whoIssued>Ministry of Health of the Republic of Belarus</mdc:whoIssued>
                     <mdc:registrationNumber>454/94/04/07/09/14/19</mdc:registrationNumber>
                     <mdc:registrationDateFrom>2017-10-31</mdc:registrationDateFrom>
@@ -87,21 +95,28 @@
             </mdc:version>
         </mdc:versions>
     </mdc:medicine>
-    <mdc:medicine id="q234ty67-g39s-12d3-a456-426614174111">
+    <mdc:medicine id="aa121538-b609-401a-ab03-c264e2f27550">
         <mdc:name>Cardiomagnyl</mdc:name>
         <mdc:company>TAKEDA, GmbH</mdc:company>
         <mdc:group>NSAID</mdc:group>
         <mdc:versions>
             <mdc:version>
                 <mdc:medicineType>tablets</mdc:medicineType>
-                <mdc:package>
-                    <mdc:packageType>jar</mdc:packageType>
-                    <mdc:number>100</mdc:number>
-                    <mdc:price>18.03</mdc:price>
-                </mdc:package>
+                <mdc:packages>
+                    <mdc:package>
+                        <mdc:packageType>jar</mdc:packageType>
+                        <mdc:number>100</mdc:number>
+                        <mdc:price>18.03</mdc:price>
+                    </mdc:package>
+                    <mdc:package>
+                        <mdc:packageType>jar</mdc:packageType>
+                        <mdc:number>30</mdc:number>
+                        <mdc:price>9.10</mdc:price>
+                    </mdc:package>
+                </mdc:packages>
                 <mdc:dosage>75 mg</mdc:dosage>
                 <mdc:certificate>
-                    <mdc:name>Registration certificate</mdc:name>
+                    <mdc:certificateName>Registration certificate</mdc:certificateName>
                     <mdc:whoIssued>Ministry of Health of the Republic of Belarus</mdc:whoIssued>
                     <mdc:registrationNumber>452/02/09/01/24/11</mdc:registrationNumber>
                     <mdc:registrationDateFrom>2019-12-21</mdc:registrationDateFrom>
@@ -110,21 +125,23 @@
             </mdc:version>
         </mdc:versions>
     </mdc:medicine>
-    <mdc:medicine id="u234ty77-g29q-12w3-a354-4s6f14674222">
+    <mdc:medicine id="ec9fbb2c-a1e8-4a6b-9da8-056448a37797">
         <mdc:name>Omez</mdc:name>
         <mdc:company>Dr. Reddy's Laboratories, LTD</mdc:company>
         <mdc:group>proton pump inhibitor</mdc:group>
         <mdc:versions>
             <mdc:version>
                 <mdc:medicineType>capsules</mdc:medicineType>
-                <mdc:package>
-                    <mdc:packageType>pack</mdc:packageType>
-                    <mdc:number>30</mdc:number>
-                    <mdc:price>34.06</mdc:price>
-                </mdc:package>
+                <mdc:packages>
+                    <mdc:package>
+                        <mdc:packageType>pack</mdc:packageType>
+                        <mdc:number>30</mdc:number>
+                        <mdc:price>34.06</mdc:price>
+                    </mdc:package>
+                </mdc:packages>
                 <mdc:dosage>20 mg</mdc:dosage>
                 <mdc:certificate>
-                    <mdc:name>Registration certificate</mdc:name>
+                    <mdc:certificateName>Registration certificate</mdc:certificateName>
                     <mdc:whoIssued>Ministry of Health of the Republic of Belarus</mdc:whoIssued>
                     <mdc:registrationNumber>1136/95/01/06/11/17</mdc:registrationNumber>
                     <mdc:registrationDateFrom>2017-01-13</mdc:registrationDateFrom>
@@ -133,14 +150,16 @@
             </mdc:version>
             <mdc:version>
                 <mdc:medicineType>capsules</mdc:medicineType>
-                <mdc:package>
-                    <mdc:packageType>pack</mdc:packageType>
-                    <mdc:number>30</mdc:number>
-                    <mdc:price>23.82</mdc:price>
-                </mdc:package>
+                <mdc:packages>
+                    <mdc:package>
+                        <mdc:packageType>pack</mdc:packageType>
+                        <mdc:number>30</mdc:number>
+                        <mdc:price>23.82</mdc:price>
+                    </mdc:package>
+                </mdc:packages>
                 <mdc:dosage>10 mg</mdc:dosage>
                 <mdc:certificate>
-                    <mdc:name>Registration certificate</mdc:name>
+                    <mdc:certificateName>Registration certificate</mdc:certificateName>
                     <mdc:whoIssued>Ministry of Health of the Republic of Belarus</mdc:whoIssued>
                     <mdc:registrationNumber>8956/09/10/10/11/14/17/19/21/21</mdc:registrationNumber>
                     <mdc:registrationDateFrom>2019-08-29</mdc:registrationDateFrom>
@@ -149,14 +168,16 @@
             </mdc:version>
             <mdc:version>
                 <mdc:medicineType>capsules</mdc:medicineType>
-                <mdc:package>
-                    <mdc:packageType>pack</mdc:packageType>
-                    <mdc:number>30</mdc:number>
-                    <mdc:price>49.50</mdc:price>
-                </mdc:package>
+                <mdc:packages>
+                    <mdc:package>
+                        <mdc:packageType>pack</mdc:packageType>
+                        <mdc:number>30</mdc:number>
+                        <mdc:price>49.50</mdc:price>
+                    </mdc:package>
+                </mdc:packages>
                 <mdc:dosage>40 mg</mdc:dosage>
                 <mdc:certificate>
-                    <mdc:name>Registration certificate</mdc:name>
+                    <mdc:certificateName>Registration certificate</mdc:certificateName>
                     <mdc:whoIssued>Ministry of Health of the Republic of Belarus</mdc:whoIssued>
                     <mdc:registrationNumber>9346/02/10/10/11/14/17/20/22/22</mdc:registrationNumber>
                     <mdc:registrationDateFrom>2020-04-12</mdc:registrationDateFrom>
@@ -165,21 +186,23 @@
             </mdc:version>
         </mdc:versions>
     </mdc:medicine>
-    <mdc:medicine id="q114ty67-g39s-12de-a456-42as14174111">
+    <mdc:medicine id="ecf56b7f-4653-4911-bfbe-588aed33ef74">
         <mdc:name>Omeprez</mdc:name>
         <mdc:company>S.C. Rompharm Company S.R.L.</mdc:company>
         <mdc:group>proton pump inhibitor</mdc:group>
         <mdc:versions>
             <mdc:version>
                 <mdc:medicineType>capsules</mdc:medicineType>
-                <mdc:package>
-                    <mdc:packageType>pack</mdc:packageType>
-                    <mdc:number>30</mdc:number>
-                    <mdc:price>34.32</mdc:price>
-                </mdc:package>
+                <mdc:packages>
+                    <mdc:package>
+                        <mdc:packageType>pack</mdc:packageType>
+                        <mdc:number>30</mdc:number>
+                        <mdc:price>34.32</mdc:price>
+                    </mdc:package>
+                </mdc:packages>
                 <mdc:dosage>20 mg</mdc:dosage>
                 <mdc:certificate>
-                    <mdc:name>Registration certificate</mdc:name>
+                    <mdc:certificateName>Registration certificate</mdc:certificateName>
                     <mdc:whoIssued>Ministry of Health of the Republic of Belarus</mdc:whoIssued>
                     <mdc:registrationNumber>6217/03/07/08/13/18</mdc:registrationNumber>
                     <mdc:registrationDateFrom>2018-12-03</mdc:registrationDateFrom>

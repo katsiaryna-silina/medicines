@@ -27,38 +27,47 @@
                                                             </xsd:restriction>
                                                         </xsd:simpleType>
                                                     </xsd:element>
-                                                    <xsd:element name="package">
+                                                    <xsd:element name="packages">
                                                         <xsd:complexType>
                                                             <xsd:sequence>
-                                                                <xsd:element name="packageType">
-                                                                    <xsd:simpleType>
-                                                                        <xsd:restriction base="xsd:string">
-                                                                            <xsd:enumeration value="tube"/>
-                                                                            <xsd:enumeration value="bottle"/>
-                                                                            <xsd:enumeration value="jar"/>
-                                                                            <xsd:enumeration value="pack"/>
-                                                                        </xsd:restriction>
-                                                                    </xsd:simpleType>
-                                                                </xsd:element>
-                                                                <xsd:element name="number">
-                                                                    <xsd:simpleType>
-                                                                        <xsd:restriction base="xsd:positiveInteger">
-                                                                            <xsd:maxInclusive value="1000"/>
-                                                                        </xsd:restriction>
-                                                                    </xsd:simpleType>
-                                                                </xsd:element>
-                                                                <xsd:element name="price">
-                                                                    <xsd:simpleType>
-                                                                        <xsd:restriction base="xsd:decimal">
-                                                                            <xsd:fractionDigits value="2"/>
-                                                                            <xsd:minInclusive value="0.01"/>
-                                                                        </xsd:restriction>
-                                                                    </xsd:simpleType>
+                                                                <xsd:element name="package" maxOccurs="unbounded">
+                                                                    <xsd:complexType>
+                                                                        <xsd:sequence>
+                                                                            <xsd:element name="packageType">
+                                                                                <xsd:simpleType>
+                                                                                    <xsd:restriction base="xsd:string">
+                                                                                        <xsd:enumeration value="tube"/>
+                                                                                        <xsd:enumeration
+                                                                                                value="bottle"/>
+                                                                                        <xsd:enumeration value="jar"/>
+                                                                                        <xsd:enumeration value="pack"/>
+                                                                                    </xsd:restriction>
+                                                                                </xsd:simpleType>
+                                                                            </xsd:element>
+                                                                            <xsd:element name="number">
+                                                                                <xsd:simpleType>
+                                                                                    <xsd:restriction
+                                                                                            base="xsd:positiveInteger">
+                                                                                        <xsd:maxInclusive value="1000"/>
+                                                                                    </xsd:restriction>
+                                                                                </xsd:simpleType>
+                                                                            </xsd:element>
+                                                                            <xsd:element name="price">
+                                                                                <xsd:simpleType>
+                                                                                    <xsd:restriction base="xsd:decimal">
+                                                                                        <xsd:fractionDigits value="2"/>
+                                                                                        <xsd:minInclusive value="0.01"/>
+                                                                                    </xsd:restriction>
+                                                                                </xsd:simpleType>
+                                                                            </xsd:element>
+                                                                        </xsd:sequence>
+                                                                        <xsd:attribute name="isSealed"
+                                                                                       type="xsd:boolean"
+                                                                                       default="false"
+                                                                                       use="optional"/>
+                                                                    </xsd:complexType>
                                                                 </xsd:element>
                                                             </xsd:sequence>
-                                                            <xsd:attribute name="isSealed" type="xsd:boolean"
-                                                                           default="false"
-                                                                           use="optional"/>
                                                         </xsd:complexType>
                                                     </xsd:element>
                                                     <xsd:element name="dosage">
@@ -73,7 +82,8 @@
                                                     <xsd:element name="certificate">
                                                         <xsd:complexType>
                                                             <xsd:sequence>
-                                                                <xsd:element name="name" type="mdc:limitedText"/>
+                                                                <xsd:element name="certificateName"
+                                                                             type="mdc:limitedText"/>
                                                                 <xsd:element name="whoIssued" type="mdc:limitedText"/>
                                                                 <xsd:element name="registrationNumber"
                                                                              type="mdc:limitedText"/>
