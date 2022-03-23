@@ -1,21 +1,33 @@
-package by.epam.silina.medicines.model;
+package by.epam.silina.medicines.model.medicines;
+
+import jakarta.xml.bind.annotation.*;
 
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
+import static by.epam.silina.medicines.config.Constant.*;
+
+@XmlType(name = MEDICINE)
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Medicine {
+    @XmlAttribute(name = ID)
     private UUID id;
+    @XmlElement(name = NAME)
     private String name;
+    @XmlElement(name = COMPANY)
     private String company;
+    @XmlElement(name = GROUP)
     private String group;
+    @XmlElementWrapper(name = VERSIONS)
+    @XmlElement(name = VERSION)
     private List<Version> versions;
 
     private Medicine() {
     }
 
-    public static Medicine.MedicineBuilder builder() {
-        return new Medicine.MedicineBuilder();
+    public static MedicineBuilder builder() {
+        return new MedicineBuilder();
     }
 
     public UUID getId() {

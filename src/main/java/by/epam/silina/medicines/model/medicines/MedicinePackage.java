@@ -1,12 +1,22 @@
-package by.epam.silina.medicines.model;
+package by.epam.silina.medicines.model.medicines;
+
+import jakarta.xml.bind.annotation.*;
 
 import java.math.BigDecimal;
 import java.util.Objects;
 
+import static by.epam.silina.medicines.config.Constant.*;
+
+@XmlType(name = PACKAGE)
+@XmlAccessorType(XmlAccessType.FIELD)
 public class MedicinePackage {
+    @XmlElement(name = PACKAGE_TYPE)
     private PackageTypeEnum packageTypeEnum;
+    @XmlElement(name = NUMBER)
     private Integer number;
+    @XmlElement(name = PRICE)
     private BigDecimal price;
+    @XmlAttribute(name = IS_SEALED)
     private boolean isSealed;
 
     private MedicinePackage() {

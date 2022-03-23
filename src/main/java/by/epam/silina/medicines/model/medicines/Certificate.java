@@ -1,13 +1,31 @@
-package by.epam.silina.medicines.model;
+package by.epam.silina.medicines.model.medicines;
+
+import by.epam.silina.medicines.config.LocalDateAdapter;
+import jakarta.xml.bind.annotation.XmlAccessType;
+import jakarta.xml.bind.annotation.XmlAccessorType;
+import jakarta.xml.bind.annotation.XmlElement;
+import jakarta.xml.bind.annotation.XmlType;
+import jakarta.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import java.time.LocalDate;
 import java.util.Objects;
 
+import static by.epam.silina.medicines.config.Constant.*;
+
+@XmlType(name = CERTIFICATE)
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Certificate {
+    @XmlElement(name = CERTIFICATE_NAME, namespace = "http://www.example.com/medicines")
     private String name;
+    @XmlElement(name = WHO_ISSUED, namespace = "http://www.example.com/medicines")
     private String whoIssued;
+    @XmlElement(name = REGISTRATION_NUMBER, namespace = "http://www.example.com/medicines")
     private String registrationNumber;
+    @XmlElement(name = REGISTRATION_DATE_FROM, namespace = "http://www.example.com/medicines")
+    @XmlJavaTypeAdapter(LocalDateAdapter.class)
     private LocalDate registrationDateFrom;
+    @XmlElement(name = REGISTRATION_DATE_TO)
+    @XmlJavaTypeAdapter(LocalDateAdapter.class)
     private LocalDate registrationDateTo;
 
     private Certificate() {

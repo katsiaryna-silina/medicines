@@ -1,9 +1,12 @@
-package by.epam.silina.medicines.model;
+package by.epam.silina.medicines.model.users;
 
 import java.util.Objects;
 
 public class Client extends User {
     private String telephoneNumber;
+
+    private Client() {
+    }
 
     private Client(String username, String password, String email, String telephoneNumber) {
         super(username, password, email);

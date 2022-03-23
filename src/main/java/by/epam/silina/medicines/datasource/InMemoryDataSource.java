@@ -1,8 +1,8 @@
 package by.epam.silina.medicines.datasource;
 
-import by.epam.silina.medicines.model.Client;
-import by.epam.silina.medicines.model.Employee;
-import by.epam.silina.medicines.model.Medicine;
+import by.epam.silina.medicines.model.medicines.Medicine;
+import by.epam.silina.medicines.model.users.Client;
+import by.epam.silina.medicines.model.users.Employee;
 
 import java.util.ArrayList;
 import java.util.List;

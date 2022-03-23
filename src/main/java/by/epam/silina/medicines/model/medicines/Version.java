@@ -1,12 +1,23 @@
-package by.epam.silina.medicines.model;
+package by.epam.silina.medicines.model.medicines;
+
+import jakarta.xml.bind.annotation.*;
 
 import java.util.List;
 import java.util.Objects;
 
+import static by.epam.silina.medicines.config.Constant.*;
+
+@XmlType(name = VERSION)
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Version {
+    @XmlElement(name = MEDICINE_TYPE)
     private MedicineTypeEnum medicineTypeEnum;
+    @XmlElement(name = DOSAGE)
     private String dosage;
+    @XmlElement(name = CERTIFICATE)
     private Certificate certificate;
+    @XmlElementWrapper(name = PACKAGES)
+    @XmlElement(name = PACKAGE)
     private List<MedicinePackage> medicinePackages;
 
     private Version() {

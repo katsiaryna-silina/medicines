@@ -1,9 +1,12 @@
-package by.epam.silina.medicines.model;
+package by.epam.silina.medicines.model.users;
 
 import java.util.Objects;
 
 public class Employee extends User {
     private String position;
+
+    private Employee() {
+    }
 
     Employee(String username, String password, String email, String position) {
         super(username, password, email);

@@ -1,4 +1,4 @@
-package by.epam.silina.medicines.model;
+package by.epam.silina.medicines.model.users;
 
 public final class EmployeeBuilder {
     private String position;
