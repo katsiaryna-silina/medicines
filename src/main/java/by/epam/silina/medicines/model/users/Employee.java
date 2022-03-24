@@ -1,5 +1,6 @@
 package by.epam.silina.medicines.model.users;
 
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 public class Employee extends User {
@@ -8,8 +9,8 @@ public class Employee extends User {
     private Employee() {
     }
 
-    Employee(String username, String password, String email, String position) {
-        super(username, password, email);
+    Employee(String username, String password, String email, String position, LocalDateTime lastLoginDateAndTime) {
+        super(username, password, email, lastLoginDateAndTime);
         this.position = position;
     }
 
@@ -29,13 +30,14 @@ public class Employee extends User {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
         Employee employee = (Employee) o;
         return Objects.equals(position, employee.position);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(position);
+        return Objects.hash(super.hashCode(), position);
     }
 
     @Override
@@ -44,6 +46,7 @@ public class Employee extends User {
                 "username='" + super.getUsername() + '\'' +
                 ", password='" + super.getPassword() + '\'' +
                 ", email='" + super.getEmail() + '\'' +
+                ", lastLoginDateAndTime=" + super.getLastLoginDateAndTime() +
                 ", position='" + position + '\'' +
                 '}';
     }

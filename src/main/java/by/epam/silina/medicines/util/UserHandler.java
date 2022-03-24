@@ -1,23 +1,31 @@
 package by.epam.silina.medicines.util;
 
-import by.epam.silina.medicines.datasource.InMemoryDataSource;
+import by.epam.silina.medicines.model.ValidationStatusEnum;
 import by.epam.silina.medicines.model.users.Client;
 import by.epam.silina.medicines.model.users.Employee;
+import by.epam.silina.medicines.util.impl.UserValidationUtilImpl;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.xml.sax.Attributes;
 import org.xml.sax.helpers.DefaultHandler;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static by.epam.silina.medicines.config.Constant.*;
 
 public class UserHandler extends DefaultHandler {
+    private static final Logger log = LoggerFactory.getLogger(UserHandler.class);
     private static final UserHandler instance = new UserHandler();
-    private InMemoryDataSource inMemoryDataSource;
-    //todo lists?
+    private final UserValidationUtil userValidationUtil = UserValidationUtilImpl.getInstance();
     private List<Client> clientList;
     private List<Employee> employeeList;
-    private StringBuilder elementValue;
+    private List<ValidationStatusEnum> validationStatuses;
+    private Client client;
+    private Employee employee;
+    private StringBuilder elementValueBuilder;
 
     private UserHandler() {
     }
@@ -28,22 +36,11 @@ public class UserHandler extends DefaultHandler {
 
     @Override
     public void characters(char[] ch, int start, int length) {
-        if (elementValue == null) {
-            elementValue = new StringBuilder();
+        if (elementValueBuilder == null) {
+            elementValueBuilder = new StringBuilder();
         } else {
-            elementValue.append(ch, start, length);
+            elementValueBuilder.append(ch, start, length);
         }
-    }
-
-    @Override
-    public void startDocument() {
-        inMemoryDataSource = InMemoryDataSource.getInstance();
-    }
-
-    @Override
-    public void endDocument() {
-        inMemoryDataSource.getClients().addAll(clientList);
-        inMemoryDataSource.getEmployees().addAll(employeeList);
     }
 
     @Override
@@ -54,77 +51,130 @@ public class UserHandler extends DefaultHandler {
                 employeeList = new ArrayList<>();
                 break;
             case USERS_CLIENT:
-                clientList.add(Client.builder().build());
+                client = Client.builder().build();
+                validationStatuses = new ArrayList<>();
                 break;
             case USERS_EMPLOYEE:
-                employeeList.add(Employee.builder().build());
+                employee = Employee.builder().build();
+                validationStatuses = new ArrayList<>();
                 break;
             case CLIENT_USERNAME:
             case CLIENT_PASSWORD:
             case CLIENT_EMAIL:
+            case CLIENT_LAST_LOGIN:
+            case CLIENT_TELEPHONE_NUMBER:
             case EMPLOYEE_USERNAME:
             case EMPLOYEE_EMAIL:
             case EMPLOYEE_PASSWORD:
-            case CLIENT_TELEPHONE_NUMBER:
+            case EMPLOYEE_LAST_LOGIN:
             case EMPLOYEE_POSITION:
-                elementValue = new StringBuilder();
+                elementValueBuilder = new StringBuilder();
                 break;
             default:
-                //todo
+                log.warn(UNKNOWN_ELEMENT, qName);
                 break;
         }
     }
 
     @Override
     public void endElement(String uri, String localName, String qName) {
-        //todo is it ok startsWith() method ?
-        if (qName.startsWith(START_STRING_CLIENT)) {
-            switch (qName) {
-                case CLIENT_USERNAME:
-                    latestClient().setUsername(elementValue.toString());
-                    break;
-                case CLIENT_PASSWORD:
-                    latestClient().setPassword(elementValue.toString());
-                    break;
-                case CLIENT_EMAIL:
-                    latestClient().setEmail(elementValue.toString());
-                    break;
-                case CLIENT_TELEPHONE_NUMBER:
-                    latestClient().setTelephoneNumber(elementValue.toString());
-                    break;
-                default:
-                    //todo
-                    break;
-            }
+        String elementValue = elementValueBuilder.toString();
+
+        if (USERS_EMPLOYEE.equals(qName)) {
+            processEmployeeEndElement();
+        } else if (USERS_CLIENT.equals(qName)) {
+            processClientEndElement();
+        } else if (qName.startsWith(START_STRING_CLIENT)) {
+            processClientEndElements(qName, elementValue);
         } else if (qName.startsWith(START_STRING_EMPLOYEE)) {
-            switch (qName) {
-                case EMPLOYEE_USERNAME:
-                    latestEmployee().setUsername(elementValue.toString());
-                    break;
-                case EMPLOYEE_PASSWORD:
-                    latestEmployee().setPassword(elementValue.toString());
-                    break;
-                case EMPLOYEE_EMAIL:
-                    latestEmployee().setEmail(elementValue.toString());
-                    break;
-                case EMPLOYEE_POSITION:
-                    latestEmployee().setPosition(elementValue.toString());
-                    break;
-                default:
-                    //todo
-                    break;
-            }
+            processEmployeeEndElements(qName, elementValue);
         }
     }
 
-    private Client latestClient() {
-        int latestClientIndex = clientList.size() - 1;
-        return clientList.get(latestClientIndex);
+    private void processEmployeeEndElements(String qName, String elementValue) {
+        switch (qName) {
+            case EMPLOYEE_USERNAME:
+                validationStatuses.add(userValidationUtil.validateUsername(elementValue));
+                employee.setUsername(elementValue);
+                break;
+            case EMPLOYEE_PASSWORD:
+                validationStatuses.add(userValidationUtil.validatePassword(elementValue));
+                employee.setPassword(elementValue);
+                break;
+            case EMPLOYEE_EMAIL:
+                validationStatuses.add(userValidationUtil.validateEmail(elementValue));
+                employee.setEmail(elementValue);
+                break;
+            case EMPLOYEE_LAST_LOGIN:
+                ValidationStatusEnum validationStatusLastLogin = userValidationUtil.validateLastLoginFromString(elementValue);
+                validationStatuses.add(validationStatusLastLogin);
+                if (validationStatusLastLogin.getStatusNumber() == 0) {
+                    employee.setLastLoginDateAndTime(LocalDateTime.parse(elementValue));
+                }
+                break;
+            case EMPLOYEE_POSITION:
+                validationStatuses.add(userValidationUtil.validateEmployeePosition(elementValue));
+                employee.setPosition(elementValue);
+                break;
+            default:
+                log.warn(UNKNOWN_ELEMENT, qName);
+                break;
+        }
     }
 
-    private Employee latestEmployee() {
-        int latestEmployeeIndex = employeeList.size() - 1;
-        return employeeList.get(latestEmployeeIndex);
+    private void processClientEndElements(String qName, String elementValue) {
+        switch (qName) {
+            case CLIENT_USERNAME:
+                validationStatuses.add(userValidationUtil.validateUsername(elementValue));
+                client.setUsername(elementValue);
+                break;
+            case CLIENT_PASSWORD:
+                validationStatuses.add(userValidationUtil.validatePassword(elementValue));
+                client.setPassword(elementValue);
+                break;
+            case CLIENT_EMAIL:
+                validationStatuses.add(userValidationUtil.validateEmail(elementValue));
+                client.setEmail(elementValue);
+                break;
+            case CLIENT_LAST_LOGIN:
+                ValidationStatusEnum validationStatusLastLogin = userValidationUtil.validateLastLoginFromString(elementValue);
+                validationStatuses.add(validationStatusLastLogin);
+                if (validationStatusLastLogin.getStatusNumber() == 0) {
+                    client.setLastLoginDateAndTime(LocalDateTime.parse(elementValue));
+                }
+                break;
+            case CLIENT_TELEPHONE_NUMBER:
+                validationStatuses.add(userValidationUtil.validateTelephoneNumber(elementValue));
+                client.setTelephoneNumber(elementValue);
+                break;
+            default:
+                log.warn(UNKNOWN_ELEMENT, qName);
+                break;
+        }
+    }
+
+    private void processClientEndElement() {
+        List<ValidationStatusEnum> validationErrors = validationStatuses.stream()
+                .filter(el -> el.getStatusNumber() != 0)
+                .collect(Collectors.toList());
+        if (validationErrors.isEmpty()) {
+            clientList.add(client);
+        } else {
+            log.error("Cannot add invalid employee to list. {}.", client);
+            validationErrors.forEach(el -> log.error(el.getStatusDescription()));
+        }
+    }
+
+    private void processEmployeeEndElement() {
+        List<ValidationStatusEnum> validationErrors = validationStatuses.stream()
+                .filter(el -> el.getStatusNumber() != 0)
+                .collect(Collectors.toList());
+        if (validationErrors.isEmpty()) {
+            employeeList.add(employee);
+        } else {
+            log.error("Cannot add invalid employee to list. {}.", employee);
+            validationErrors.forEach(el -> log.error(el.getStatusDescription()));
+        }
     }
 
     public List<Client> getClientList() {

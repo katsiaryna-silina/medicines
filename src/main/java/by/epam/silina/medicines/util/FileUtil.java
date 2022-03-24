@@ -5,5 +5,7 @@ import by.epam.silina.medicines.exception.FileUtilException;
 import java.io.File;
 
 public interface FileUtil {
-    boolean isFileEmpty(File file) throws FileUtilException;
+    boolean isFileExists(File file) throws FileUtilException;
+
+    boolean isFileNotEmpty(File file) throws FileUtilException;
 }

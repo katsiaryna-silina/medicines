@@ -1,5 +1,6 @@
 package by.epam.silina.medicines.model.users;
 
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 public class Client extends User {
@@ -8,8 +9,8 @@ public class Client extends User {
     private Client() {
     }
 
-    private Client(String username, String password, String email, String telephoneNumber) {
-        super(username, password, email);
+    private Client(String username, String password, String email, String telephoneNumber, LocalDateTime lastLoginDateAndTime) {
+        super(username, password, email, lastLoginDateAndTime);
         this.telephoneNumber = telephoneNumber;
     }
 
@@ -45,6 +46,7 @@ public class Client extends User {
                 "username='" + super.getUsername() + '\'' +
                 ", password='" + super.getPassword() + '\'' +
                 ", email='" + super.getEmail() + '\'' +
+                ", lastLoginDateAndTime=" + super.getLastLoginDateAndTime() +
                 ", telephoneNumber='" + telephoneNumber + '\'' +
                 '}';
     }
@@ -54,6 +56,7 @@ public class Client extends User {
         private String username;
         private String password;
         private String email;
+        private LocalDateTime lastLoginDateAndTime;
 
         private ClientBuilder() {
         }
@@ -78,8 +81,13 @@ public class Client extends User {
             return this;
         }
 
+        public ClientBuilder lastLoginDateAndTime(LocalDateTime lastLoginDateAndTime) {
+            this.lastLoginDateAndTime = lastLoginDateAndTime;
+            return this;
+        }
+
         public Client build() {
-            return new Client(this.telephoneNumber, this.username, this.password, this.email);
+            return new Client(this.telephoneNumber, this.username, this.password, this.email, this.lastLoginDateAndTime);
         }
     }
 }

@@ -10,8 +10,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.File;
 
-import static by.epam.silina.medicines.config.Constant.MEDICINE_XML_PATH;
-import static by.epam.silina.medicines.config.Constant.USERS_XML_PATH;
+import static by.epam.silina.medicines.config.Constant.*;
 
 public class SAXParsingUtil implements ParsingUtil {
     private static final Logger log = LoggerFactory.getLogger(SAXParsingUtil.class);
@@ -29,36 +28,38 @@ public class SAXParsingUtil implements ParsingUtil {
 
     public void parse(String fileName) {
         File file = new File(fileName);
-        if (file.exists()) {
-            try {
-                if (fileUtil.isFileEmpty(file)) {
-                    log.error("Cannot parse file={}. It is empty.", fileName);
-                } else {
-                    switch (fileName) {
-                        case MEDICINE_XML_PATH:
-                            try {
-                                medicinesSAXParser.parse(file);
-                            } catch (ParserException e) {
-                                log.error("", e);
-                            }
-                            break;
-                        case USERS_XML_PATH:
-                            try {
-                                saxUsersParser.parse(file);
-                            } catch (ParserException e) {
-                                log.error("", e);
-                            }
-                            break;
-                        default:
-                            log.error("File={} cannot be parsed by this program.", fileName);
-                            break;
-                    }
+        try {
+            if (fileUtil.isFileExists(file) && fileUtil.isFileNotEmpty(file)) {
+                switch (fileName) {
+                    case MEDICINES_XML_PATH:
+                        parseMedicinesXML(file);
+                        break;
+                    case USERS_XML_PATH:
+                        parseUsersXML(file);
+                        break;
+                    default:
+                        log.error(CANNOT_PARSE_FILE_BY_THIS_PROGRAM, fileName);
+                        break;
                 }
-            } catch (FileUtilException e) {
-                log.error("", e);
             }
-        } else {
-            log.error("Cannot parse file={}. It doesn't exist.", fileName);
+        } catch (FileUtilException e) {
+            log.error(CANNOT_PARSE_FILE, file.getName(), e);
+        }
+    }
+
+    private void parseUsersXML(File file) {
+        try {
+            saxUsersParser.parse(file);
+        } catch (ParserException e) {
+            log.error(CANNOT_PARSE_FILE, file.getName(), e);
+        }
+    }
+
+    private void parseMedicinesXML(File file) {
+        try {
+            medicinesSAXParser.parse(file);
+        } catch (ParserException e) {
+            log.error(CANNOT_PARSE_FILE, file.getName(), e);
         }
     }
 }

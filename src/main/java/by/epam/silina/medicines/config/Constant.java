@@ -1,7 +1,7 @@
 package by.epam.silina.medicines.config;
 
 public final class Constant {
-    public static final String MEDICINE_XML_PATH = "src/main/resources/medicines.xml";
+    public static final String MEDICINES_XML_PATH = "src/main/resources/medicines.xml";
     public static final String USERS_XML_PATH = "src/main/resources/users.xml";
 
     public static final String EFFERVESCENT_TABLETS_TYPE = "effervescent tablets";
@@ -46,7 +46,6 @@ public final class Constant {
     public static final String MDC_MEDICINE_TYPE = "mdc:medicineType";
     public static final String MDC_PACKAGES = "mdc:packages";
     public static final String MDC_PACKAGE = "mdc:package";
-    public static final String MDC_IS_SEALED = "mdc:isSealed";
     public static final String MDC_PACKAGE_TYPE = "mdc:packageType";
     public static final String MDC_NUMBER = "mdc:number";
     public static final String MDC_PRICE = "mdc:price";
@@ -68,15 +67,31 @@ public final class Constant {
     public static final String USERS_EMPLOYEE = "users:employee";
     public static final String CLIENT_USERNAME = "client:username";
     public static final String CLIENT_PASSWORD = "client:password";
+    public static final String CLIENT_LAST_LOGIN = "client:lastLogin";
     public static final String CLIENT_EMAIL = "client:email";
     public static final String EMPLOYEE_USERNAME = "employee:username";
     public static final String EMPLOYEE_PASSWORD = "employee:password";
+    public static final String EMPLOYEE_LAST_LOGIN = "employee:lastLogin";
     public static final String EMPLOYEE_EMAIL = "employee:email";
 
+    public static final String UNKNOWN_ELEMENT = "Unknown element='{}'";
+    public static final String CANNOT_PARSE_FILE = "Cannot parse file={}.";
+    public static final String CANNOT_PARSE_FILE_BY_THIS_PROGRAM = "File={} cannot be parsed by this program.";
 
+    public static final String OK_STATUS = "OK.";
     public static final String FILE_IS_NULL = "File is null.";
-    public static final String TELEPHONE_NUMBER_IS_NULL = "Telephone number is null.";
-    public static final String EMAIL_IS_NULL = "Email is null.";
+    public static final String FILE_DOES_NOT_EXIST = "File doesn't exist.";
+    public static final String EMAIL_IS_EMPTY = "Email is empty.";
+    public static final String EMAIL_IS_NOT_VALID = "Email is not valid.";
+    public static final String USERNAME_IS_EMPTY = "Username is empty";
+    public static final String USERNAME_IS_NOT_VALID = "Username is not valid.";
+    public static final String PASSWORD_IS_EMPTY = "Password is empty";
+    public static final String PASSWORD_IS_NOT_VALID = "Password is not valid.";
+    public static final String TELEPHONE_NUMBER_IS_EMPTY = "Telephone number is empty";
+    public static final String TELEPHONE_NUMBER_IS_NOT_VALID = "Telephone is not valid.";
+    public static final String EMPLOYEE_POSITION_IS_EMPTY = "Employee position is empty";
+    public static final String LAST_LOGIN_IS_NULL = "Last login is null.";
+    public static final String LAST_LOGIN_IS_EMPTY = "Last login is empty";
     public static final String ID_IS_NULL = "ID is null.";
     public static final String MEDICINE_NAME_IS_NULL = "Medicine name is null.";
     public static final String COMPANY_IS_NULL = "Company is null.";

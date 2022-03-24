@@ -13,7 +13,7 @@ import javax.xml.parsers.SAXParserFactory;
 import java.io.File;
 import java.io.IOException;
 
-import static by.epam.silina.medicines.config.Constant.USERS_XML_PATH;
+import static by.epam.silina.medicines.config.Constant.FILE_IS_NULL;
 
 public class UsersSAXParser implements Parser {
     private static final UsersSAXParser instance = new UsersSAXParser();
@@ -29,11 +29,15 @@ public class UsersSAXParser implements Parser {
 
     @Override
     public void parse(File file) throws SAXParserException {
-        //todo newInstance? XXE attack?!
-        SAXParserFactory factory = SAXParserFactory.newInstance();
+        if (file == null) {
+            throw new SAXParserException(FILE_IS_NULL);
+        }
+        SAXParserFactory saxParserFactory = SAXParserFactory.newInstance();
         try {
-            SAXParser saxParser = factory.newSAXParser();
-            saxParser.parse(USERS_XML_PATH, userHandler);
+            saxParserFactory.setFeature("http://xml.org/sax/features/external-general-entities", false);
+            saxParserFactory.setFeature("http://xml.org/sax/features/external-parameter-entities", false);
+            SAXParser saxParser = saxParserFactory.newSAXParser();
+            saxParser.parse(file, userHandler);
         } catch (ParserConfigurationException | SAXException | IOException e) {
             throw new SAXParserException(e);
         }

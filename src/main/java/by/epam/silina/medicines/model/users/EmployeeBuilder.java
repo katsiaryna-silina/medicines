@@ -1,10 +1,13 @@
 package by.epam.silina.medicines.model.users;
 
+import java.time.LocalDateTime;
+
 public final class EmployeeBuilder {
     private String position;
     private String username;
     private String password;
     private String email;
+    private LocalDateTime lastLoginDateAndTime;
 
     EmployeeBuilder() {
     }
@@ -30,6 +33,6 @@ public final class EmployeeBuilder {
     }
 
     public Employee build() {
-        return new Employee(this.username, this.password, this.email, this.position);
+        return new Employee(this.username, this.password, this.email, this.position, this.lastLoginDateAndTime);
     }
 }
