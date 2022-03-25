@@ -1,6 +1,10 @@
 package by.epam.silina.medicines.util;
 
+import by.epam.silina.medicines.model.ValidationStatusEnum;
 import by.epam.silina.medicines.model.medicines.*;
+import by.epam.silina.medicines.util.impl.MedicineValidationUtilImpl;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.xml.sax.Attributes;
 import org.xml.sax.helpers.DefaultHandler;
 
@@ -9,19 +13,26 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import static by.epam.silina.medicines.config.Constant.*;
 
 public class MedicineHandler extends DefaultHandler {
+    private static final Logger log = LoggerFactory.getLogger(MedicineHandler.class);
     private static final MedicineHandler instance = new MedicineHandler();
+    private final MedicineValidationUtil medicineValidationUtil = MedicineValidationUtilImpl.getInstance();
     private Medicines medicines;
+    private String medicineId;
+    private Medicine medicine;
     private Version version;
     private Certificate certificate;
+    private MedicinePackage medicinePackage;
+    private List<ValidationStatusEnum> validationStatuses;
     private List<Version> versionList;
     private List<Medicine> medicineList;
     private List<MedicinePackage> medicinePackageList;
 
-    private StringBuilder elementValue;
+    private StringBuilder elementValueBuilder;
 
     private MedicineHandler() {
     }
@@ -32,10 +43,10 @@ public class MedicineHandler extends DefaultHandler {
 
     @Override
     public void characters(char[] ch, int start, int length) {
-        if (elementValue == null) {
-            elementValue = new StringBuilder();
+        if (elementValueBuilder == null) {
+            elementValueBuilder = new StringBuilder();
         } else {
-            elementValue.append(ch, start, length);
+            elementValueBuilder.append(ch, start, length);
         }
     }
 
@@ -45,44 +56,38 @@ public class MedicineHandler extends DefaultHandler {
     }
 
     @Override
-    public void endDocument() {
-        medicines.setMedicineList(medicineList);
-    }
-
-    @Override
     public void startElement(String uri, String lName, String qName, Attributes attr) {
         switch (qName) {
             case MDC_MEDICINES:
                 medicineList = new ArrayList<>();
                 break;
             case MDC_MEDICINE:
-                Medicine medicine = Medicine.builder().build();
+                validationStatuses = new ArrayList<>();
+                medicine = Medicine.builder().build();
                 int attrLength = attr.getLength();
                 for (int i = 0; i < attrLength; i++) {
                     if (ID.equals(attr.getQName(i))) {
-                        String stringId = attr.getValue(i);
-                        medicine.setId(UUID.fromString(stringId));
+                        medicineId = attr.getValue(i);
                     }
                 }
-                medicineList.add(medicine);
                 break;
             case MDC_VERSIONS:
                 versionList = new ArrayList<>();
                 break;
             case MDC_VERSION:
+                validationStatuses = new ArrayList<>();
                 version = Version.builder().build();
-                versionList.add(version);
                 break;
             case MDC_PACKAGES:
                 medicinePackageList = new ArrayList<>();
                 break;
             case MDC_PACKAGE:
-                MedicinePackage medicinePackage = MedicinePackage.builder().build();
-                medicinePackageList.add(medicinePackage);
+                validationStatuses = new ArrayList<>();
+                medicinePackage = MedicinePackage.builder().build();
                 break;
             case MDC_CERTIFICATE:
+                validationStatuses = new ArrayList<>();
                 certificate = Certificate.builder().build();
-                version.setCertificate(certificate);
                 break;
             case MDC_NAME:
             case MDC_COMPANY:
@@ -97,87 +102,154 @@ public class MedicineHandler extends DefaultHandler {
             case MDC_REGISTRATION_NUMBER:
             case MDC_REGISTRATION_DATE_FROM:
             case MDC_REGISTRATION_DATE_TO:
-                elementValue = new StringBuilder();
+                elementValueBuilder = new StringBuilder();
                 break;
             default:
-                //todo
+                log.warn(UNKNOWN_ELEMENT, qName);
                 break;
         }
     }
 
     @Override
     public void endElement(String uri, String localName, String qName) {
-        //todo is it ok startsWith() method ?
+        String elementValue = elementValueBuilder.toString();
+
         switch (qName) {
+            case MDC_MEDICINES:
+                medicines.setMedicineList(medicineList);
+                break;
+            case MDC_MEDICINE:
+                processMedicineEndElement();
+                break;
+            case MDC_VERSION:
+                processVersionEndElement();
+                break;
+            case MDC_PACKAGE:
+                List<ValidationStatusEnum> packageValidationErrors = validationStatuses.stream()
+                        .filter(el -> el.getStatusNumber() != 0)
+                        .collect(Collectors.toList());
+                if (packageValidationErrors.isEmpty()) {
+                    medicinePackageList.add(medicinePackage);
+                } else {
+                    log.error(CANNOT_CREATE_MEDICINE_PACKAGE);
+                    packageValidationErrors.forEach(el -> log.error(el.getStatusDescription()));
+                }
+                break;
+            case MDC_CERTIFICATE:
+                List<ValidationStatusEnum> certificateValidationErrors = validationStatuses.stream()
+                        .filter(el -> el.getStatusNumber() != 0)
+                        .collect(Collectors.toList());
+                if (certificateValidationErrors.isEmpty()) {
+                    version.setCertificate(certificate);
+                    break;
+                }
+                log.error(CANNOT_CREATE_CERTIFICATE);
+                certificateValidationErrors.forEach(el -> log.error(el.getStatusDescription()));
+                break;
             case MDC_NAME:
-                latestMedicine().setName(elementValue.toString());
+                validationStatuses.add(medicineValidationUtil.validateMedicineName(elementValue));
+                medicine.setName(elementValue);
                 break;
             case MDC_COMPANY:
-                latestMedicine().setCompany(elementValue.toString());
+                validationStatuses.add(medicineValidationUtil.validateCompany(elementValue));
+                medicine.setCompany(elementValue);
                 break;
             case MDC_GROUP:
-                latestMedicine().setGroup(elementValue.toString());
+                validationStatuses.add(medicineValidationUtil.validateGroup(elementValue));
+                medicine.setGroup(elementValue);
                 break;
             case MDC_VERSIONS:
-                latestMedicine().setVersions(versionList);
+                validationStatuses.add(medicineValidationUtil.validateVersions(versionList));
+                medicine.setVersions(versionList);
                 break;
             case MDC_MEDICINE_TYPE:
-                MedicineTypeEnum medicineTypeEnum = MedicineTypeEnum.getMedicineTypeEnumByTypeName(elementValue.toString());
-                latestVersion().setMedicineTypeEnum(medicineTypeEnum);
+                MedicineTypeEnum medicineTypeEnum = MedicineTypeEnum.getMedicineTypeEnumByTypeName(elementValue);
+                validationStatuses.add(medicineValidationUtil.validateMedicineTypeEnum(medicineTypeEnum));
+                version.setMedicineTypeEnum(medicineTypeEnum);
                 break;
             case MDC_PACKAGES:
-                latestVersion().setMedicinePackages(medicinePackageList);
+                version.setMedicinePackages(medicinePackageList);
                 break;
             case MDC_PACKAGE_TYPE:
-                PackageTypeEnum packageTypeEnum = PackageTypeEnum.getPackageTypeEnumByTypeName(elementValue.toString());
-                latestMedicinePackage().setPackageTypeEnum(packageTypeEnum);
+                PackageTypeEnum packageTypeEnum = PackageTypeEnum.getPackageTypeEnumByTypeName(elementValue);
+                validationStatuses.add(medicineValidationUtil.validatePackageTypeEnum(packageTypeEnum));
+                medicinePackage.setPackageTypeEnum(packageTypeEnum);
                 break;
             case MDC_NUMBER:
-                latestMedicinePackage().setNumber(Integer.valueOf(elementValue.toString()));
+                validationStatuses.add(medicineValidationUtil.validateMedicineNumberInPackage(elementValue));
+                medicinePackage.setNumber(Integer.valueOf(elementValue));
                 break;
             case MDC_PRICE:
-                latestMedicinePackage().setPrice(BigDecimal.valueOf(Double.parseDouble(elementValue.toString())));
+                ValidationStatusEnum validationStatusPrice = medicineValidationUtil.validatePrice(elementValue);
+                validationStatuses.add(validationStatusPrice);
+                if (validationStatusPrice.getStatusNumber() == 0) {
+                    medicinePackage.setPrice(BigDecimal.valueOf(Double.parseDouble(elementValue)));
+                }
                 break;
             case MDC_DOSAGE:
-                latestVersion().setDosage(elementValue.toString());
+                validationStatuses.add(medicineValidationUtil.validateDosage(elementValue));
+                version.setDosage(elementValue);
                 break;
             case MDC_CERTIFICATE_NAME:
-                certificate.setName(elementValue.toString());
+                validationStatuses.add(medicineValidationUtil.validateCertificateName(elementValue));
+                certificate.setName(elementValue);
                 break;
             case MDC_WHO_ISSUED:
-                certificate.setWhoIssued(elementValue.toString());
+                validationStatuses.add(medicineValidationUtil.validateWhoIssued(elementValue));
+                certificate.setWhoIssued(elementValue);
                 break;
             case MDC_REGISTRATION_NUMBER:
-                certificate.setRegistrationNumber(elementValue.toString());
+                validationStatuses.add(medicineValidationUtil.validateRegistrationNumber(elementValue));
+                certificate.setRegistrationNumber(elementValue);
                 break;
             case MDC_REGISTRATION_DATE_FROM:
-                certificate.setRegistrationDateFrom(LocalDate.parse(elementValue.toString()));
+                ValidationStatusEnum validationStatusRegistrationDateFrom = medicineValidationUtil.validateRegistrationDateFrom(elementValue);
+                validationStatuses.add(validationStatusRegistrationDateFrom);
+                if (validationStatusRegistrationDateFrom.getStatusNumber() == 0) {
+                    certificate.setRegistrationDateFrom(LocalDate.parse(elementValue));
+                }
                 break;
             case MDC_REGISTRATION_DATE_TO:
-                certificate.setRegistrationDateTo(LocalDate.parse(elementValue.toString()));
+                ValidationStatusEnum validationStatusRegistrationDateTo = medicineValidationUtil.validateRegistrationDateTo(elementValue);
+                validationStatuses.add(validationStatusRegistrationDateTo);
+                if (validationStatusRegistrationDateTo.getStatusNumber() == 0) {
+                    certificate.setRegistrationDateTo(LocalDate.parse(elementValue));
+                }
                 break;
             default:
-                //todo
+                log.warn(UNKNOWN_ELEMENT, qName);
                 break;
         }
     }
 
-    private Medicine latestMedicine() {
-        int latestMedicineIndex = medicineList.size() - 1;
-        return medicineList.get(latestMedicineIndex);
+    private void processMedicineEndElement() {
+        ValidationStatusEnum validationStatusEnum = medicineValidationUtil.validateId(medicineId);
+        validationStatuses.add(validationStatusEnum);
+        List<ValidationStatusEnum> validationErrors = validationStatuses.stream()
+                .filter(el -> el.getStatusNumber() != 0)
+                .collect(Collectors.toList());
+        if (validationErrors.isEmpty()) {
+            medicine.setId(UUID.fromString(medicineId));
+            medicineList.add(medicine);
+        } else {
+            log.error(CANNOT_CREATE_MEDICINE);
+            validationErrors.forEach(el -> log.error(el.getStatusDescription()));
+        }
     }
 
-    private Version latestVersion() {
-        int latestVersionIndex = versionList.size() - 1;
-        return versionList.get(latestVersionIndex);
+    private void processVersionEndElement() {
+        List<ValidationStatusEnum> versionValidationErrors = validationStatuses.stream()
+                .filter(el -> el.getStatusNumber() != 0)
+                .collect(Collectors.toList());
+        if (versionValidationErrors.isEmpty()) {
+            versionList.add(version);
+        } else {
+            log.error(CANNOT_CREATE_VERSION);
+            versionValidationErrors.forEach(el -> log.error(el.getStatusDescription()));
+        }
     }
 
-    private MedicinePackage latestMedicinePackage() {
-        int latestMedicinePackageIndex = medicinePackageList.size() - 1;
-        return medicinePackageList.get(latestMedicinePackageIndex);
-    }
-
-    public List<Medicine> getMedicineList() {
-        return medicineList;
+    public Medicines getMedicines() {
+        return medicines;
     }
 }

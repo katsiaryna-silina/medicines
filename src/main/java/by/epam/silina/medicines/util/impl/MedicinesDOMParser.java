@@ -114,7 +114,7 @@ public class MedicinesDOMParser implements Parser {
     private List<MedicinePackage> getMedicinePackages(Element versionElement) {
         List<MedicinePackage> medicinePackages = new ArrayList<>();
         NodeList packageNodes = versionElement.getElementsByTagName(MDC_PACKAGE);
-        for (int i = 0; i < packageNodes.getLength(); i++) {//1 or 2  - number of "package"
+        for (int i = 0; i < packageNodes.getLength(); i++) {
             Node packageNode = packageNodes.item(i);
             if (packageNode.getNodeType() == Node.ELEMENT_NODE) {
                 Element packageElement = (Element) packageNode;

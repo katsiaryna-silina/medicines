@@ -77,10 +77,12 @@ public final class Constant {
     public static final String UNKNOWN_ELEMENT = "Unknown element='{}'";
     public static final String CANNOT_PARSE_FILE = "Cannot parse file={}.";
     public static final String CANNOT_PARSE_FILE_BY_THIS_PROGRAM = "File={} cannot be parsed by this program.";
+    public static final String CANNOT_ADD_INVALID_CLIENT = "Cannot add invalid client to list. {}.";
+    public static final String CANNOT_ADD_INVALID_EMPLOYEE = "Cannot add invalid employee to list. {}.";
     public static final String CANNOT_CREATE_MEDICINE = "Cannot create invalid medicine.";
     public static final String CANNOT_CREATE_MEDICINE_PACKAGE = "Cannot create invalid medicine package.";
     public static final String CANNOT_CREATE_VERSION = "Cannot create invalid version.";
-    public static final String CANNOT_CREATE_CERTIFICATE = "Cannot create invalid version.";
+    public static final String CANNOT_CREATE_CERTIFICATE = "Cannot create invalid certificate.";
 
 
     public static final String OK_STATUS = "OK.";

@@ -160,7 +160,7 @@ public class UserHandler extends DefaultHandler {
         if (validationErrors.isEmpty()) {
             clientList.add(client);
         } else {
-            log.error("Cannot add invalid employee to list. {}.", client);
+            log.error(CANNOT_ADD_INVALID_CLIENT, client);
             validationErrors.forEach(el -> log.error(el.getStatusDescription()));
         }
     }
@@ -172,7 +172,7 @@ public class UserHandler extends DefaultHandler {
         if (validationErrors.isEmpty()) {
             employeeList.add(employee);
         } else {
-            log.error("Cannot add invalid employee to list. {}.", employee);
+            log.error(CANNOT_ADD_INVALID_EMPLOYEE, employee);
             validationErrors.forEach(el -> log.error(el.getStatusDescription()));
         }
     }

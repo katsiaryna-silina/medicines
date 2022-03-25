@@ -14,7 +14,7 @@ import javax.xml.parsers.SAXParserFactory;
 import java.io.File;
 import java.io.IOException;
 
-import static by.epam.silina.medicines.config.Constant.MEDICINE_XML_PATH;
+import static by.epam.silina.medicines.config.Constant.FILE_IS_NULL;
 
 public class MedicinesSAXParser implements Parser {
     private static final MedicinesSAXParser instance = new MedicinesSAXParser();
@@ -30,14 +30,18 @@ public class MedicinesSAXParser implements Parser {
 
     @Override
     public void parse(File file) throws ParserException {
-        //todo newInstance? XXE attack?!
-        SAXParserFactory factory = SAXParserFactory.newInstance();
+        if (file == null) {
+            throw new SAXParserException(FILE_IS_NULL);
+        }
+        SAXParserFactory saxParserFactory = SAXParserFactory.newInstance();
         try {
-            SAXParser saxParser = factory.newSAXParser();
-            saxParser.parse(MEDICINE_XML_PATH, medicineHandler);
+            saxParserFactory.setFeature("http://xml.org/sax/features/external-general-entities", false);
+            saxParserFactory.setFeature("http://xml.org/sax/features/external-parameter-entities", false);
+            SAXParser saxParser = saxParserFactory.newSAXParser();
+            saxParser.parse(file, medicineHandler);
         } catch (ParserConfigurationException | SAXException | IOException e) {
             throw new SAXParserException(e);
         }
-        medicineHandler.getMedicineList().forEach(el -> log.info("{}", el));
+        medicineHandler.getMedicines().getMedicineList().forEach(el -> log.info("{}", el));
     }
 }

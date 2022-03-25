@@ -11,9 +11,11 @@ public class App {
     public static void main(String[] args) {
         SAXParsingUtil.getInstance().parse(USERS_XML_PATH);
 
-       /* SAXParsingUtil.getInstance().parse(MEDICINE_XML_PATH);
+        SAXParsingUtil.getInstance().parse(MEDICINES_XML_PATH);
 
-        StAXParsingUtil.getInstance().parse(MEDICINE_XML_PATH);*/
+/*
+        StAXParsingUtil.getInstance().parse(MEDICINE_XML_PATH);
+*/
 
         JAXBUtilImpl.getInstance().convert(MEDICINES_XML_PATH);
 
