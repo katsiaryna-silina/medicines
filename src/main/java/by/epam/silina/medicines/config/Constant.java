@@ -74,6 +74,7 @@ public final class Constant {
     public static final String EMPLOYEE_LAST_LOGIN = "employee:lastLogin";
     public static final String EMPLOYEE_EMAIL = "employee:email";
 
+    public static final String NO_SUCH_ENUM = "No such type enum. type name={}";
     public static final String UNKNOWN_ELEMENT = "Unknown element='{}'";
     public static final String CANNOT_PARSE_FILE = "Cannot parse file={}.";
     public static final String CANNOT_PARSE_FILE_BY_THIS_PROGRAM = "File={} cannot be parsed by this program.";
@@ -83,7 +84,6 @@ public final class Constant {
     public static final String CANNOT_CREATE_MEDICINE_PACKAGE = "Cannot create invalid medicine package.";
     public static final String CANNOT_CREATE_VERSION = "Cannot create invalid version.";
     public static final String CANNOT_CREATE_CERTIFICATE = "Cannot create invalid certificate.";
-
 
     public static final String OK_STATUS = "OK.";
     public static final String FILE_IS_NULL = "File is null.";

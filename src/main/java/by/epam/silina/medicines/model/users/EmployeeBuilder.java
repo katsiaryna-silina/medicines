@@ -32,6 +32,11 @@ public final class EmployeeBuilder {
         return this;
     }
 
+    public EmployeeBuilder lastLoginDateAndTime(LocalDateTime lastLoginDateAndTime) {
+        this.lastLoginDateAndTime = lastLoginDateAndTime;
+        return this;
+    }
+
     public Employee build() {
         return new Employee(this.username, this.password, this.email, this.position, this.lastLoginDateAndTime);
     }

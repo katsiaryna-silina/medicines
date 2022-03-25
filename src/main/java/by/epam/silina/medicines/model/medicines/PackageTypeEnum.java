@@ -2,6 +2,8 @@ package by.epam.silina.medicines.model.medicines;
 
 import by.epam.silina.medicines.config.EnumIdentifier;
 import jakarta.xml.bind.annotation.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Arrays;
 import java.util.Optional;
@@ -21,6 +23,7 @@ public enum PackageTypeEnum implements EnumIdentifier {
     @XmlEnumValue(PACK_TYPE)
     PACK(PACK_TYPE);
 
+    private static final Logger log = LoggerFactory.getLogger(PackageTypeEnum.class);
     private final String name;
 
     PackageTypeEnum(String name) {
@@ -34,7 +37,7 @@ public enum PackageTypeEnum implements EnumIdentifier {
         if (optionalPackageTypeEnum.isPresent()) {
             return optionalPackageTypeEnum.get();
         } else {
-            //todo log and exception
+            log.warn(NO_SUCH_ENUM, typeName);
             return null;
         }
     }

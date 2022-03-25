@@ -1,6 +1,8 @@
 package by.epam.silina.medicines.model.medicines;
 
+import by.epam.silina.medicines.config.BigDecimalAdapter;
 import jakarta.xml.bind.annotation.*;
+import jakarta.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import java.math.BigDecimal;
 import java.util.Objects;
@@ -15,6 +17,7 @@ public class MedicinePackage {
     @XmlElement(name = NUMBER)
     private Integer number;
     @XmlElement(name = PRICE)
+    @XmlJavaTypeAdapter(BigDecimalAdapter.class)
     private BigDecimal price;
     @XmlAttribute(name = IS_SEALED)
     private boolean isSealed;

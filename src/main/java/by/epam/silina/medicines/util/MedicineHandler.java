@@ -9,6 +9,7 @@ import org.xml.sax.Attributes;
 import org.xml.sax.helpers.DefaultHandler;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +24,7 @@ public class MedicineHandler extends DefaultHandler {
     private final MedicineValidationUtil medicineValidationUtil = MedicineValidationUtilImpl.getInstance();
     private Medicines medicines;
     private String medicineId;
+    private String isSealed;
     private Medicine medicine;
     private Version version;
     private Certificate certificate;
@@ -64,8 +66,8 @@ public class MedicineHandler extends DefaultHandler {
             case MDC_MEDICINE:
                 validationStatuses = new ArrayList<>();
                 medicine = Medicine.builder().build();
-                int attrLength = attr.getLength();
-                for (int i = 0; i < attrLength; i++) {
+                int attrLengthOdMedicine = attr.getLength();
+                for (int i = 0; i < attrLengthOdMedicine; i++) {
                     if (ID.equals(attr.getQName(i))) {
                         medicineId = attr.getValue(i);
                     }
@@ -82,6 +84,13 @@ public class MedicineHandler extends DefaultHandler {
                 medicinePackageList = new ArrayList<>();
                 break;
             case MDC_PACKAGE:
+                isSealed = null;
+                int attrLengthOfPackage = attr.getLength();
+                for (int i = 0; i < attrLengthOfPackage; i++) {
+                    if (IS_SEALED.equals(attr.getQName(i))) {
+                        isSealed = attr.getValue(i);
+                    }
+                }
                 validationStatuses = new ArrayList<>();
                 medicinePackage = MedicinePackage.builder().build();
                 break;
@@ -125,6 +134,11 @@ public class MedicineHandler extends DefaultHandler {
                 processVersionEndElement();
                 break;
             case MDC_PACKAGE:
+                if (isSealed != null) {
+                    ValidationStatusEnum validationStatusEnum = medicineValidationUtil.validateIsSealed(isSealed);
+                    validationStatuses.add(validationStatusEnum);
+                    medicinePackage.setSealed(Boolean.parseBoolean(isSealed));
+                }
                 List<ValidationStatusEnum> packageValidationErrors = validationStatuses.stream()
                         .filter(el -> el.getStatusNumber() != 0)
                         .collect(Collectors.toList());
@@ -183,7 +197,8 @@ public class MedicineHandler extends DefaultHandler {
                 ValidationStatusEnum validationStatusPrice = medicineValidationUtil.validatePrice(elementValue);
                 validationStatuses.add(validationStatusPrice);
                 if (validationStatusPrice.getStatusNumber() == 0) {
-                    medicinePackage.setPrice(BigDecimal.valueOf(Double.parseDouble(elementValue)));
+                    BigDecimal priceBigDecimal = BigDecimal.valueOf(Double.parseDouble(elementValue));
+                    medicinePackage.setPrice(priceBigDecimal.setScale(NUMBER_OF_DECIMAL_PLACE, RoundingMode.FLOOR));
                 }
                 break;
             case MDC_DOSAGE:

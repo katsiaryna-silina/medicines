@@ -19,6 +19,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -42,6 +43,10 @@ public class MedicinesStAXParser implements Parser {
 
     public static MedicinesStAXParser getInstance() {
         return instance;
+    }
+
+    public List<Medicine> getMedicines() {
+        return medicineList;
     }
 
     @Override
@@ -105,7 +110,9 @@ public class MedicinesStAXParser implements Parser {
                     medicinePackage = MedicinePackage.builder().build();
                     Attribute isSealed = startElement.getAttributeByName(new QName(IS_SEALED));
                     if (isSealed != null) {
-                        medicinePackage.setSealed(isSealed.isSpecified());
+                        medicinePackage.setSealed(Boolean.parseBoolean(isSealed.getValue()));
+                    } else {
+                        medicinePackage.setSealed(false);
                     }
                     break;
                 case PACKAGE_TYPE:
@@ -115,11 +122,12 @@ public class MedicinesStAXParser implements Parser {
                     break;
                 case NUMBER:
                     nextEvent = reader.nextEvent();
-                    medicinePackage.setNumber(nextEvent.getEventType());
+                    medicinePackage.setNumber(Integer.valueOf(nextEvent.asCharacters().getData()));
                     break;
                 case PRICE:
                     nextEvent = reader.nextEvent();
-                    medicinePackage.setPrice(BigDecimal.valueOf(nextEvent.getEventType()));
+                    BigDecimal priceBigDecimal = BigDecimal.valueOf(Double.parseDouble(nextEvent.asCharacters().getData()));
+                    medicinePackage.setPrice(priceBigDecimal.setScale(NUMBER_OF_DECIMAL_PLACE, RoundingMode.FLOOR));
                     break;
                 case DOSAGE:
                     nextEvent = reader.nextEvent();

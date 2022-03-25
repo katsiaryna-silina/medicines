@@ -19,6 +19,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -31,6 +32,7 @@ public class MedicinesDOMParser implements Parser {
     public static final MedicineValidationUtil medicineValidationUtil = MedicineValidationUtilImpl.getInstance();
     private static final Logger log = LoggerFactory.getLogger(MedicinesDOMParser.class);
     private static final MedicinesDOMParser instance = new MedicinesDOMParser();
+    private List<Medicine> medicines;
     private List<ValidationStatusEnum> validationStatuses;
 
     private MedicinesDOMParser() {
@@ -38,6 +40,10 @@ public class MedicinesDOMParser implements Parser {
 
     public static MedicinesDOMParser getInstance() {
         return instance;
+    }
+
+    public List<Medicine> getMedicines() {
+        return medicines;
     }
 
     public void parse(File file) throws DOMParserException {
@@ -48,7 +54,7 @@ public class MedicinesDOMParser implements Parser {
             Document document = createDocument(file);
             normalizeXMLStructure(document);
 
-            List<Medicine> medicines = new ArrayList<>();
+            medicines = new ArrayList<>();
             NodeList allMedicineNodes = document.getElementsByTagName(MDC_MEDICINE);
             for (int i = 0; i < allMedicineNodes.getLength(); i++) {
                 Node medicineNode = allMedicineNodes.item(i);
@@ -142,10 +148,11 @@ public class MedicinesDOMParser implements Parser {
                 .filter(el -> el.getStatusNumber() != 0)
                 .collect(Collectors.toList());
         if (validationErrors.isEmpty()) {
+            BigDecimal priceBigDecimal = BigDecimal.valueOf(Double.parseDouble(price));
             return MedicinePackage.builder()
                     .packageTypeEnum(packageTypeEnum)
                     .number(Integer.valueOf(medicineNumber))
-                    .price(BigDecimal.valueOf(Double.parseDouble(price)))
+                    .price(priceBigDecimal.setScale(NUMBER_OF_DECIMAL_PLACE, RoundingMode.FLOOR))
                     .isSealed(Boolean.parseBoolean(isSealed))
                     .build();
         } else {

@@ -14,6 +14,7 @@ import java.io.File;
 public class MedicinesJAXBImpl implements MedicinesJAXB {
     private static final Logger log = LoggerFactory.getLogger(MedicinesJAXBImpl.class);
     private static final MedicinesJAXBImpl instance = new MedicinesJAXBImpl();
+    private Medicines medicines;
 
     private MedicinesJAXBImpl() {
     }
@@ -22,13 +23,17 @@ public class MedicinesJAXBImpl implements MedicinesJAXB {
         return instance;
     }
 
+    public Medicines getMedicines() {
+        return medicines;
+    }
+
     @Override
     public void convert(File file) throws JAXBMedicinesException {
         try {
             JAXBContext jaxbContext = JAXBContext.newInstance(Medicines.class);
             Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
 
-            Medicines medicines = (Medicines) unmarshaller.unmarshal(file);
+            medicines = (Medicines) unmarshaller.unmarshal(file);
             medicines.getMedicineList().forEach(el -> log.info("{}", el));
         } catch (JAXBException e) {
             throw new JAXBMedicinesException(e);

@@ -2,6 +2,8 @@ package by.epam.silina.medicines.model.medicines;
 
 import by.epam.silina.medicines.config.EnumIdentifier;
 import jakarta.xml.bind.annotation.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Arrays;
 import java.util.Optional;
@@ -19,6 +21,7 @@ public enum MedicineTypeEnum implements EnumIdentifier {
     @XmlEnumValue(TABLETS_TYPE)
     TABLETS(TABLETS_TYPE);
 
+    private static final Logger log = LoggerFactory.getLogger(MedicineTypeEnum.class);
     private final String name;
 
     MedicineTypeEnum(String name) {
@@ -32,7 +35,7 @@ public enum MedicineTypeEnum implements EnumIdentifier {
         if (optionalMedicineTypeEnum.isPresent()) {
             return optionalMedicineTypeEnum.get();
         } else {
-            //todo log and exception
+            log.warn(NO_SUCH_ENUM, typeName);
             return null;
         }
     }

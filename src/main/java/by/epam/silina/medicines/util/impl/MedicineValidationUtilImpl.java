@@ -88,7 +88,6 @@ public class MedicineValidationUtilImpl implements MedicineValidationUtil {
         }
     }
 
-
     @Override
     public ValidationStatusEnum validateDosage(String dosage) {
         if (StringUtils.isBlank(dosage)) {
