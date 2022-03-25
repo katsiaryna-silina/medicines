@@ -48,7 +48,8 @@ public class MedicinesStAXParser implements Parser {
     public void parse(File file) throws ParserException {
         XMLInputFactory xmlInputFactory = XMLInputFactory.newInstance();
         try {
-            XMLEventReader reader = xmlInputFactory.createXMLEventReader(new FileInputStream(MEDICINE_XML_PATH));
+            xmlInputFactory.setProperty(XMLInputFactory.IS_SUPPORTING_EXTERNAL_ENTITIES, Boolean.FALSE);
+            XMLEventReader reader = xmlInputFactory.createXMLEventReader(new FileInputStream(MEDICINES_XML_PATH));
             while (reader.hasNext()) {
                 XMLEvent nextEvent = reader.nextEvent();
                 processStartElementOfEvent(reader, nextEvent);
@@ -57,7 +58,7 @@ public class MedicinesStAXParser implements Parser {
         } catch (XMLStreamException | FileNotFoundException e) {
             throw new StAXParsingUtilException(e);
         }
-        getMedicineList().forEach(el -> log.info("{}", el));
+        medicineList.forEach(el -> log.info("{}", el));
     }
 
     private void processStartElementOfEvent(XMLEventReader reader, XMLEvent nextEvent) throws XMLStreamException {
@@ -148,7 +149,6 @@ public class MedicinesStAXParser implements Parser {
                     certificate.setRegistrationDateTo(LocalDate.parse(nextEvent.asCharacters().getData()));
                     break;
                 default:
-                    //todo
                     break;
             }
         }
@@ -177,13 +177,8 @@ public class MedicinesStAXParser implements Parser {
                     version.setCertificate(certificate);
                     break;
                 default:
-                    //todo
                     break;
             }
         }
-    }
-
-    public List<Medicine> getMedicineList() {
-        return medicineList;
     }
 }
