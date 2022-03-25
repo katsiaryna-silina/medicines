@@ -10,8 +10,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.File;
 
-import static by.epam.silina.medicines.config.Constant.MEDICINE_XML_PATH;
-import static by.epam.silina.medicines.config.Constant.USERS_XML_PATH;
+import static by.epam.silina.medicines.config.Constant.*;
 
 public class DOMParsingUtil implements ParsingUtil {
     private static final Logger log = LoggerFactory.getLogger(DOMParsingUtil.class);
@@ -28,32 +27,24 @@ public class DOMParsingUtil implements ParsingUtil {
 
     public void parse(String fileName) {
         File file = new File(fileName);
-        if (file.exists()) {
-            try {
-                if (fileUtil.isFileEmpty(file)) {
-                    log.error("Cannot parse file={}. It is empty.", fileName);
+        try {
+            if (fileUtil.isFileExists(file) && fileUtil.isFileNotEmpty(file)) {
+                if (MEDICINES_XML_PATH.equals(fileName)) {
+                    parseMedicinesXML(file);
                 } else {
-                    switch (fileName) {
-                        case MEDICINE_XML_PATH:
-                            try {
-                                medicinesDOMParser.parse(file);
-                            } catch (ParserException e) {
-                                log.error("", e);
-                            }
-                            break;
-                        case USERS_XML_PATH:
-                            //todo
-                            break;
-                        default:
-                            log.error("File={} cannot be parsed by this program.", fileName);
-                            break;
-                    }
+                    log.error(CANNOT_PARSE_FILE_BY_THIS_PROGRAM, fileName);
                 }
-            } catch (FileUtilException e) {
-                log.error("", e);
             }
-        } else {
-            log.error("Cannot parse file={}. It doesn't exist.", fileName);
+        } catch (FileUtilException e) {
+            log.error(CANNOT_PARSE_FILE, file.getName(), e);
+        }
+    }
+
+    private void parseMedicinesXML(File file) {
+        try {
+            medicinesDOMParser.parse(file);
+        } catch (ParserException e) {
+            log.error(CANNOT_PARSE_FILE, file.getName(), e);
         }
     }
 }

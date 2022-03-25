@@ -77,6 +77,11 @@ public final class Constant {
     public static final String UNKNOWN_ELEMENT = "Unknown element='{}'";
     public static final String CANNOT_PARSE_FILE = "Cannot parse file={}.";
     public static final String CANNOT_PARSE_FILE_BY_THIS_PROGRAM = "File={} cannot be parsed by this program.";
+    public static final String CANNOT_CREATE_MEDICINE = "Cannot create invalid medicine.";
+    public static final String CANNOT_CREATE_MEDICINE_PACKAGE = "Cannot create invalid medicine package.";
+    public static final String CANNOT_CREATE_VERSION = "Cannot create invalid version.";
+    public static final String CANNOT_CREATE_CERTIFICATE = "Cannot create invalid version.";
+
 
     public static final String OK_STATUS = "OK.";
     public static final String FILE_IS_NULL = "File is null.";
@@ -88,19 +93,37 @@ public final class Constant {
     public static final String PASSWORD_IS_EMPTY = "Password is empty";
     public static final String PASSWORD_IS_NOT_VALID = "Password is not valid.";
     public static final String TELEPHONE_NUMBER_IS_EMPTY = "Telephone number is empty";
-    public static final String TELEPHONE_NUMBER_IS_NOT_VALID = "Telephone is not valid.";
+    public static final String TELEPHONE_NUMBER_IS_NOT_VALID = "Telephone number is not valid.";
     public static final String EMPLOYEE_POSITION_IS_EMPTY = "Employee position is empty";
     public static final String LAST_LOGIN_IS_NULL = "Last login is null.";
     public static final String LAST_LOGIN_IS_EMPTY = "Last login is empty";
     public static final String ID_IS_NULL = "ID is null.";
-    public static final String MEDICINE_NAME_IS_NULL = "Medicine name is null.";
-    public static final String COMPANY_IS_NULL = "Company is null.";
+    public static final String MEDICINE_NAME_IS_EMPTY = "Medicine name is empty.";
+    public static final String COMPANY_IS_EMPTY = "Company is empty.";
+    public static final String GROUP_IS_EMPTY = "Group is empty.";
+    public static final String MEDICINE_TYPE_ENUM_IS_NULL = "Medicine type enum is null";
     public static final String VERSIONS_ARE_NULL = "Versions are null.";
-    public static final String MEDICINE_TYPE_ENUM_IS_NULL = "MedicineTypeEnum is null.";
-    public static final String DOSAGE_IS_NULL = "Dosage is null.";
+    public static final String DOSAGE_IS_EMPTY = "Dosage is empty.";
+    public static final String DOSAGE_IS_NOT_VALID = "Dosage is not valid.";
     public static final String CERTIFICATE_IS_NULL = "Certificate is null.";
     public static final String MEDICINE_PACKAGES_ARE_NULL = "Medicine packages are null";
-    public static final String CERTIFICATE_NAME_IS_NULL = "Certificate name is null.";
+    public static final String CERTIFICATE_NAME_IS_EMPTY = "Certificate name is empty.";
+    public static final String CERTIFICATE_NAME_IS_NOT_VALID = "Certificate name is not valid.";
+    public static final String WHO_ISSUED_IS_EMPTY = "Who issued is empty.";
+    public static final String WHO_ISSUED_IS_NOT_VALID = "Who issued is not valid.";
+    public static final String REGISTRATION_NUMBER_IS_EMPTY = "Registration number is empty.";
+    public static final String REGISTRATION_NUMBER_IS_NOT_VALID = "Registration number is not valid.";
+    public static final String REGISTRATION_DATE_FROM_IS_NULL = "Registration date from is null.";
+    public static final String REGISTRATION_DATE_FROM_IS_NOT_VALID = "Registration date from is not valid.";
+    public static final String REGISTRATION_DATE_TO_IS_NULL = "Registration date to is null.";
+    public static final String REGISTRATION_DATE_TO_IS_NOT_VALID = "Registration date to is not valid.";
+    public static final String PACKAGE_TYPE_ENUM_IS_NULL = "Package type enum is null";
+    public static final String MEDICINE_NUMBER_IN_PACKAGE_IS_NULL = "Medicine number in package is null";
+    public static final String MEDICINE_NUMBER_IN_PACKAGE_IS_NOT_VALID = "Medicine number in package is not valid";
+    public static final String PRICE_IS_NULL = "Price is null.";
+    public static final String PRICE_IS_NOT_VALID = "Price is not valid.";
+    public static final String ID_IS_NOT_VALID = "Id is not valid.";
+    public static final String IS_SEALED_IS_NOT_BOOLEAN_TYPE = "isSealed is not boolean type.";
 
     public static final String REGEX_FOR_CHECKING_EMAIL = "[\\d\\D]*@[\\d\\D]*\\.[\\d\\D]*";
     public static final String REGEX_FOR_CHECKING_TELEPHONE_NUMBER = "\\+[0-9]*";
@@ -117,6 +140,8 @@ public final class Constant {
     public static final int DOSAGE_MIN_LENGTH = 3;
     public static final int MAX_TEXT_LENGTH = 50;
     public static final int MIN_TEXT_LENGTH = 3;
+    public static final double MIN_PRICE = 0.01;
+    public static final int NUMBER_OF_DECIMAL_PLACE = 2;
 
     private Constant() {
     }
